@@ -157,9 +157,14 @@ async function createAndDeployZkapp() {
 		publicKey: PrivateKey.fromBase58(wallets[0].privateKey).toPublicKey(),
 		privateKey: PrivateKey.fromBase58(wallets[0].privateKey),
 	};
+	// const zkAppKeys = {
+	// 	publicKey: PrivateKey.fromBase58(wallets[1].privateKey).toPublicKey(),
+	// 	privateKey: PrivateKey.fromBase58(wallets[1].privateKey),
+	// };
+	const randPrivateKey = PrivateKey.random();
 	const zkAppKeys = {
-		publicKey: PrivateKey.fromBase58(wallets[1].privateKey).toPublicKey(),
-		privateKey: PrivateKey.fromBase58(wallets[1].privateKey),
+		publicKey: randPrivateKey.toPublicKey(),
+		privateKey: randPrivateKey
 	};
 	const network = Mina.Network('https://proxy.berkeley.minaexplorer.com/graphql');
 	Mina.setActiveInstance(network);
@@ -176,7 +181,7 @@ async function createAndDeployZkapp() {
 	await Add.compile();
 	log('Updating...');
 
-	const payerAccount: any = { sender: payerKeys.publicKey, fee: Number('0.1') * 1e9, nonce: Types.Account.toJSON(account).nonce };
+	const payerAccount: any = { sender: payerKeys.publicKey, fee: Number('0.5') * 1e9/*, nonce: Types.Account.toJSON(account).nonce*/ };
 	const tx: any = await Mina.transaction(payerAccount, () => {
 		AccountUpdate.fundNewAccount(zkAppKeys.publicKey);
 		zkApp.deploy({ zkappKey: zkAppKeys.privateKey });
@@ -187,7 +192,7 @@ async function createAndDeployZkapp() {
 	await tx.prove();
 
 	log('Submitting...');
-	await tx.sign([payerKeys.privateKey]).send().then((sentTx: any) => {
+	await tx.sign([payerKeys.privateKey, zkAppKeys.privateKey]).send().then((sentTx: any) => {
 		console.log(sentTx.data);
 		if (sentTx.data) {
 			// console.log('Sent transaction: ', sentTx.hash());
