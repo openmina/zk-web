@@ -1,4 +1,4 @@
-import { Field, method, SmartContract, State, state, Permissions } from 'o1js';
+import { Field, method, SmartContract, State, state, Permissions, DeployArgs } from 'o1js';
 
 export class Add extends SmartContract {
 	@state(Field) num = State<Field>();
@@ -17,8 +17,8 @@ export class Add extends SmartContract {
 		this.num.set(newState);
 	}
 
-	override deploy(): void {
-		super.deploy();
+	override deploy(args: DeployArgs) {
+		super.deploy(args);
 		// this.account.permissions.set({
 		// 	...Permissions.default(),
 		// 	setDelegate: Permissions.proof(),

@@ -1,4 +1,3 @@
-
 import { AccountUpdate, Experimental, fetchAccount, Field, Mina, PrivateKey, PublicKey, shutdown, TokenId, Types, UInt64 } from 'o1js';
 import { Add } from './app/add';
 import { getWebnode, log } from './app/helper';
@@ -156,8 +155,9 @@ async function createAndDeployZkapp() {
 	// const network = 'http://webrtc2.webnode.openmina.com:3089/graphql';
 	const network = 'https://proxy.berkeley.minaexplorer.com/graphql';
 	Mina.setActiveInstance(Mina.Network(network));
-	let zkappAddress = PublicKey.fromBase58(wallets[1].publicKey);
-	const zkApp = new Add(zkappAddress);
+	const zkAppPublicKey = PublicKey.fromBase58(wallets[1].publicKey);
+	const zkAppPrivateKey = PrivateKey.fromBase58(wallets[1].privateKey);
+	const zkApp = new Add(zkAppPublicKey);
 	const { account } = await fetchAccount({ publicKey: PublicKey.fromBase58(wallets[0].publicKey) }) as { account: Types.Account };
 	log('fetching account...');
 
@@ -171,7 +171,7 @@ async function createAndDeployZkapp() {
 	const deployerAccount: any = { sender: accountPublicKey, fee: 3000000000, nonce: Types.Account.toJSON(account).nonce };
 	const tx: any = await Mina.transaction(deployerAccount, () => {
 		AccountUpdate.fundNewAccount(accountPublicKey);
-		zkApp.deploy();
+		zkApp.deploy({ zkappKey: zkAppPrivateKey });
 		console.log('zkApp deployed');
 	});
 
@@ -180,7 +180,7 @@ async function createAndDeployZkapp() {
 	console.log(proof);
 
 	log('Submitting...');
-	await tx.sign([accountPrivateKey]).send().then((sentTx: any) => {
+	await tx.sign([accountPrivateKey, zkAppPrivateKey]).send().then((sentTx: any) => {
 		console.log(sentTx.data);
 		if (sentTx.data) {
 			// console.log('Sent transaction: ', sentTx.hash());
