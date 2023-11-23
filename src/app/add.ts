@@ -4,8 +4,8 @@ export class Add extends SmartContract {
 	@state(Field) num = State<Field>();
 
 	override init(): void {
-		this.account.provedState.assertEquals(this.account.provedState.get());
-		this.account.provedState.get().assertFalse();
+		// this.account.provedState.assertEquals(this.account.provedState.get());
+		// this.account.provedState.get().assertFalse();
 
 		super.init();
 		this.num.set(Field(1));
@@ -19,21 +19,21 @@ export class Add extends SmartContract {
 
 	override deploy(): void {
 		super.deploy();
-		this.account.permissions.set({
-			...Permissions.default(),
-			setDelegate: Permissions.proof(),
-			setPermissions: Permissions.proof(),
-			setVerificationKey: Permissions.proof(),
-			setZkappUri: Permissions.proof(),
-			setTokenSymbol: Permissions.proof(),
-			incrementNonce: Permissions.proof(),
-			setVotingFor: Permissions.proof(),
-			setTiming: Permissions.proof(),
-			send: Permissions.proof(),
-			editState: Permissions.proof(),
-			receive: Permissions.proof(),
-			access: Permissions.proof(),
-			editActionState: Permissions.proof(),
-		});
+		// this.account.permissions.set({
+		// 	...Permissions.default(),
+		// 	setDelegate: Permissions.proof(),
+		// 	setPermissions: Permissions.proof(),
+		// 	setVerificationKey: Permissions.proof(),
+		// 	setZkappUri: Permissions.proof(),
+		// 	setTokenSymbol: Permissions.proof(),
+		// 	incrementNonce: Permissions.proof(),
+		// 	setVotingFor: Permissions.proof(),
+		// 	setTiming: Permissions.proof(),
+		// 	send: Permissions.proof(),
+		// 	editState: Permissions.proof(),
+		// 	receive: Permissions.proof(),
+		// 	access: Permissions.proof(),
+		// 	editActionState: Permissions.proof(),
+		// });
 	}
 }

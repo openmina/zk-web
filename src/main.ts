@@ -156,9 +156,9 @@ async function createAndDeployZkapp() {
 	// const network = 'http://webrtc2.webnode.openmina.com:3089/graphql';
 	const network = 'https://proxy.berkeley.minaexplorer.com/graphql';
 	Mina.setActiveInstance(Mina.Network(network));
-	let zkappAddress = PublicKey.fromBase58(wallets[0].publicKey);
+	let zkappAddress = PublicKey.fromBase58(wallets[1].publicKey);
 	const zkApp = new Add(zkappAddress);
-	const { account } = await fetchAccount({ publicKey: zkappAddress }) as { account: Types.Account };
+	const { account } = await fetchAccount({ publicKey: PublicKey.fromBase58(wallets[0].publicKey) }) as { account: Types.Account };
 	log('fetching account...');
 
 	const accountPrivateKey: PrivateKey = PrivateKey.fromBase58(wallets[0].privateKey);
