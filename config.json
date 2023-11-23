@@ -1,17 +1,11 @@
 {
   "version": 1,
   "deployAliases": {
-    "berkeley": {
-      "url": "http://1.k8.openmina.com:31754/node2/graphql",
-      "keyPath": "keys/berkeley.json",
-      "fee": "0.1",
-      "smartContract": "Add"
-    },
     "testnet": {
-      "url": "http://1.k8.openmina.com:31754/node2/graphql",
+      "url": "https://proxy.berkeley.minaexplorer.com/graphql",
       "keyPath": "keys/testnet.json",
       "feepayerKeyPath": "/Users/teofil/.cache/zkapp-cli/keys/acc1.json",
-      "feepayerAlias": "acc1",
+      "smartContract": "src/app/add",
       "fee": "0.1"
     }
   }

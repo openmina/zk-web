@@ -153,34 +153,41 @@ async function proofZkApp() {
 async function createAndDeployZkapp() {
 	// const network = 'http://1.k8.openmina.com:31754/node2/graphql';
 	// const network = 'http://webrtc2.webnode.openmina.com:3089/graphql';
-	const network = 'https://proxy.berkeley.minaexplorer.com/graphql';
-	Mina.setActiveInstance(Mina.Network(network));
-	const zkAppPublicKey = PublicKey.fromBase58(wallets[1].publicKey);
-	const zkAppPrivateKey = PrivateKey.fromBase58(wallets[1].privateKey);
-	const zkApp = new Add(zkAppPublicKey);
-	const { account } = await fetchAccount({ publicKey: PublicKey.fromBase58(wallets[0].publicKey) }) as { account: Types.Account };
+	const payerKeys = {
+		publicKey: PrivateKey.fromBase58(wallets[0].privateKey).toPublicKey(),
+		privateKey: PrivateKey.fromBase58(wallets[0].privateKey),
+	};
+	const zkAppKeys = {
+		publicKey: PrivateKey.fromBase58(wallets[1].privateKey).toPublicKey(),
+		privateKey: PrivateKey.fromBase58(wallets[1].privateKey),
+	};
+	const network = Mina.Network('https://proxy.berkeley.minaexplorer.com/graphql');
+	Mina.setActiveInstance(network);
+	// const zkAppPublicKey = PublicKey.fromBase58(wallets[1].publicKey);
+	// const zkAppPrivateKey = PrivateKey.fromBase58(wallets[1].privateKey);
+	const zkApp = new Add(zkAppKeys.publicKey);
+	const { account } = await fetchAccount({ publicKey: payerKeys.publicKey }) as { account: Types.Account };
 	log('fetching account...');
 
-	const accountPrivateKey: PrivateKey = PrivateKey.fromBase58(wallets[0].privateKey);
-	const accountPublicKey: PublicKey = accountPrivateKey.toPublicKey();
+	// const accountPrivateKey: PrivateKey = PrivateKey.fromBase58(wallets[0].privateKey);
+	// const accountPublicKey: PublicKey = accountPrivateKey.toPublicKey();
 
 	log('Compiling...');
 	await Add.compile();
 	log('Updating...');
 
-	const deployerAccount: any = { sender: accountPublicKey, fee: 3000000000, nonce: Types.Account.toJSON(account).nonce };
-	const tx: any = await Mina.transaction(deployerAccount, () => {
-		AccountUpdate.fundNewAccount(accountPublicKey);
-		zkApp.deploy({ zkappKey: zkAppPrivateKey });
-		console.log('zkApp deployed');
+	const payerAccount: any = { sender: payerKeys.publicKey, fee: Number('0.1') * 1e9, nonce: Types.Account.toJSON(account).nonce };
+	const tx: any = await Mina.transaction(payerAccount, () => {
+		AccountUpdate.fundNewAccount(zkAppKeys.publicKey);
+		zkApp.deploy({ zkappKey: zkAppKeys.privateKey });
+		console.log('zkApp updated');
 	});
 
 	log('Proving...');
-	let proof = await tx.prove();
-	console.log(proof);
+	await tx.prove();
 
 	log('Submitting...');
-	await tx.sign([accountPrivateKey, zkAppPrivateKey]).send().then((sentTx: any) => {
+	await tx.sign([payerKeys.privateKey]).send().then((sentTx: any) => {
 		console.log(sentTx.data);
 		if (sentTx.data) {
 			// console.log('Sent transaction: ', sentTx.hash());
@@ -193,7 +200,7 @@ async function createAndDeployZkapp() {
 		}
 	});
 
-	// const tx2: any = await Mina.transaction(deployerAccount, () => {
+	// const tx2: any = await Mina.transaction(payerAccount, () => {
 	// 	AccountUpdate.fundNewAccount(accountPublicKey);
 	// 	zkApp.update();
 	// 	console.log('zkApp updated');

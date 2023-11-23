@@ -1,4 +1,10 @@
-{
-  "privateKey": "EKF8DdFDoG5PFR9aXJmQZusASMvzPJXR7mt1TPD8MeP9q4bY3PGg",
-  "publicKey": "B62qmeMNyF6p5ESV8onzRwqvAN4GzFG5PbJK97TLa48fHcAP6jnG2Pr"
-}
+[
+  {
+    "publicKey": "B62qrztYfPinaKqpXaYGY6QJ3SSW2NNKs7SajBLF1iFNXW9BoALN2Aq",
+    "privateKey": "EKEEpMELfQkMbJDt2fB4cFXKwSf1x4t7YD4twREy5yuJ84HBZtF9"
+  },
+  {
+    "publicKey": "B62qrJKtrMJCFDaYTqaxpY5KU1XuwSiL1ZtWteNFKxsmW9xZzG3cYX2",
+    "privateKey": "EKEFi6hzC6F3H6gsDMF271ZUGg59cFxEhaWcdd3JazWbgf414T9K"
+  }
+]

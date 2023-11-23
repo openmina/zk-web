@@ -13,7 +13,7 @@ export class Add extends SmartContract {
 
 	@method update(): void {
 		const currentState = this.num.getAndAssertEquals();
-		const newState = currentState.add(26);
+		const newState = currentState.add(2);
 		this.num.set(newState);
 	}
 

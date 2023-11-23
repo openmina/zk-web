@@ -1,0 +1,47 @@
+body {
+    background: #2d2d2d;
+    color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+}
+
+button {
+    cursor: pointer;
+    border: 1px solid black;
+    border-radius: 8px;
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    height: 50px;
+    width: 250px;
+    text-align: center;
+}
+
+#btnZkApp {
+    background: blueviolet;
+}
+
+#proofZkApp {
+    background: darkcyan;
+}
+
+#simpleZkApp {
+    background: #c6b137;
+}
+
+#start {
+    background: #da2020;
+}
+
+.logs {
+    display: flex;
+    width: unset;
+    color: white;
+    font-size: 18px;
+    font-family: monospace;
+    padding: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 6px;
+    margin-top: 20px;
+}
