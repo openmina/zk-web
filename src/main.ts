@@ -17,11 +17,11 @@ const wallets = [
 ];
 
 document.getElementById('btnZkApp')?.addEventListener('click', async () => {
-	// log('adding account to watch...');
-	// let addedAccount = await getWebnode().watched_accounts().add(wallets[0].publicKey);
-	// let gotAccount = await fetchAccount({ publicKey: wallets[0].publicKey });
-	// console.log('got account', gotAccount);
-	// log('got account to watch...');
+	log('adding account to watch...');
+	let addedAccount = await getWebnode().watched_accounts().add(wallets[0].publicKey);
+	let gotAccount = await fetchAccount({ publicKey: wallets[0].publicKey });
+	console.log('got account', gotAccount);
+	log('got account to watch...');
 	await createAndDeployZkapp();
 });
 
@@ -183,7 +183,7 @@ async function createAndDeployZkapp() {
 
 	const payerAccount: any = { sender: payerKeys.publicKey, fee: Number('0.5') * 1e9/*, nonce: Types.Account.toJSON(account).nonce*/ };
 	const tx: any = await Mina.transaction(payerAccount, () => {
-		AccountUpdate.fundNewAccount(zkAppKeys.publicKey);
+		AccountUpdate.fundNewAccount(payerKeys.publicKey);
 		zkApp.deploy({ zkappKey: zkAppKeys.privateKey });
 		console.log('zkApp updated');
 	});

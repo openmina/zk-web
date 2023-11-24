@@ -5,8 +5,8 @@ import base from 'base-x';
 
 document.getElementById('start')?.addEventListener('click', async () => {
 	await loadO1js();
-	// await loadWebnode();
-	// setWebnode(getWebnode());
+	await loadWebnode();
+	setWebnode(getWebnode());
 	log('o1js and webnode are loaded!');
 });
 
