@@ -7,7 +7,7 @@ import { AccountUpdate, DeployArgs, Experimental, Int64,Permissions, method, Pri
 export class TokenContract extends SmartContract {
 	override deploy(args: DeployArgs) {
 		super.deploy(args);
-		this.setPermissions({
+		this.account.permissions.set({
 			...Permissions.default(),
 			access: Permissions.proofOrSignature(),
 		});

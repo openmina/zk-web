@@ -33,6 +33,7 @@ module.exports = {
 		extensions: ['.tsx', '.ts', '.js'],
 	},
 	devServer: {
+		port: 9000,
 		headers: {
 			'Cross-Origin-Opener-Policy': 'same-origin',
 			'Cross-Origin-Embedder-Policy': 'require-corp',
